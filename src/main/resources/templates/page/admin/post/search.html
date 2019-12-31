@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div class="box box-search" th:fragment="search"  >
+        <div class="box-header with-border">
+            <i class="fa fa-search"></i><h3 class="box-title">Search</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            </div>
+        </div>
+            <div class="card-description">
+                <form action="" method="get" class="form-inline">
+                    <div class="input-group">
+                        <select class="form-control" name="search_cnt">
+                            <option value="10" th:selected="${#request.getParameter('size') == '10' or #request.getParameter('search_cnt') == '10'}">10개씩 보기</option>
+                            <option value="20" th:selected="${#request.getParameter('size') == '20' or #request.getParameter('search_cnt') == '20'}">20개씩 보기</option>
+                            <option value="30" th:selected="${#request.getParameter('size') == '30' or #request.getParameter('search_cnt') == '30'}">30개씩 보기</option>
+                            <option value="50" th:selected="${#request.getParameter('size') == '50' or #request.getParameter('search_cnt') == '50'}">50개씩 보기</option>
+                            <option value="100" th:selected="${#request.getParameter('size') == '100' or #request.getParameter('search_cnt') == '100'}">100개씩 보기</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="search_text" th:value="${#request.getParameter('search_text')} ? ${#request.getParameter('search_text')} : ''"  placeholder="검색어를 입력하세요">
+                    </div>
+                    <input type="submit" class="button form-control btn btn-info" value="검색">
+                </form>
+            </div>
+    </div>
+
+</body>
+</html>
