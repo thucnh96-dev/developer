@@ -1,6 +1,7 @@
 package com.project.controller;
 
 import com.project.entity.User;
+import com.project.response.ResponseUtil;
 import com.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -10,6 +11,9 @@ import java.security.Principal;
 import java.util.LinkedHashMap;
 
 public abstract class AbtractController {
+
+    @Autowired
+    protected ResponseUtil responseUtil;
 
     @Autowired
     private UserService userService;

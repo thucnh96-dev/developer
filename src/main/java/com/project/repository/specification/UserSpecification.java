@@ -2,6 +2,7 @@ package com.project.repository.specification;
 
 import com.project.entity.User;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.criteria.*;
 import java.util.LinkedList;
@@ -16,14 +17,14 @@ public class UserSpecification implements Specification<User> {
     private final int sortCase;
     private final boolean isAscSort;
 
-    public UserSpecification(Long id, String name, String phone, boolean isDesc, String searchKey, int sortCase, boolean isAscSort, boolean isAscSort1) {
+    public UserSpecification(Long id, String name, String phone, boolean isDesc, String searchKey, int sortCase, boolean isAscSort) {
         this.id = id;
         this.name = name;
         this.phone = phone;
         this.isDesc = isDesc;
         this.searchKey = searchKey;
         this.sortCase = sortCase;
-        this.isAscSort = isAscSort1;
+        this.isAscSort = isAscSort;
     }
 
     @Override
@@ -32,29 +33,33 @@ public class UserSpecification implements Specification<User> {
 
         predicates.add(cb.isNull(root.get("deleteAt")));
 
+        if (!StringUtils.isEmpty(name)){
+         predicates.add(cb.like(root.get("name"),"% "+this.name+" %"));
+        }
+        if (!StringUtils.isEmpty(phone)){
+            predicates.add(cb.like(root.get("phone"),"% "+this.phone+" %"));
+        }
+
         Path orderClause;
         switch (sortCase) {
             case 1:
                 orderClause = root.get("name");
                 break;
             case 2:
-                orderClause = root.get("salePrice");
+                orderClause = root.get("phone");
                 break;
             case 3:
-                orderClause = root.get("quantity");
+                orderClause = root.get("createAt");
                 break;
-            case 4:
-                orderClause = root.get("createdOn");
+            default:
+                orderClause = root.get("createAt");
                 break;
-            default: // sort by product name
-                orderClause = root.get("createdOn");
         }
         if (isAscSort){
             cq.orderBy(cb.asc(orderClause));
         }else {
             cq.orderBy(cb.desc(orderClause));
         }
-
         return cb.and(predicates.toArray(new Predicate[]{}));
     }
 }
